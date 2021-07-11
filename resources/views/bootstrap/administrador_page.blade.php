@@ -1,5 +1,7 @@
 @php
+
 setlocale(LC_ALL, "pt_BR", "pt_BR.iso-8859-1", "pt_BR.utf-8", "portuguese");
+
 $meses = [
     1=>"Janeiro",
     2=>"Fevereiro",
@@ -17,6 +19,9 @@ $meses = [
 @endphp
 @section("headmain")
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+{{-- datepicker --}}
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css"  />
 
 @endsection
 @section("bodymain")
@@ -101,13 +106,13 @@ $meses = [
           <div class="mb-4 row">
             <label for="inputPassword" class="col-sm-3 col-form-label">Data inicio:</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="datainicio">
+              <input type="text" class="form-control datepicker" name="datainicio" >
             </div>
           </div>
           <div class="mb-4 row">
             <label for="inputPassword" class="col-sm-3 col-form-label">Data final:</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="datafinal">
+              <input type="text" class="form-control datepicker" name="datafinal">
             </div>
           </div>
           <input type="hidden" name="typeFilter" value="periodo">
@@ -135,7 +140,7 @@ $meses = [
           <div class="mb-4 row">
             <label for="inputPassword" class="col-sm-3 col-form-label">Vendedor:</label>
             <div class="col-sm-8">
-              <select name="fvendedor" class="form-select">
+              <select name="vendedor" class="form-select">
                 @foreach($list_operadores as $key=>$value)
                   <option value="{{$value["id"]}}">{{$value["name"]}}</option>
                 @endforeach
@@ -158,8 +163,14 @@ $meses = [
 @section("footermain")
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
 <script type="text/javascript">
 $('#cep').mask('00000-000');
 $('#cpf_resp, #cpf_c').mask('000.000.000-00', {reverse: true});
+$('.datepicker').datepicker({
+    format: 'dd/mm/yyyy',
+    language: 'pt-BR'
+});
 </script>
 @endsection

@@ -16,6 +16,7 @@ use App\Http\Controllers\authenticationController;
 */
 
 Route::get('/', function () {
+
     if(isset($_SESSION["LOGADO"]) and $_SESSION["LOGADO"]=="startsite"){
         $parcelas = \DB::table("parcelas")->get()->toArray();
         $planos = \DB::table("planos")->get()->toArray();
@@ -25,6 +26,7 @@ Route::get('/', function () {
     } else {
         return view('bootstrap.index');
     }
+
 })->name("index");
 
 

@@ -1,5 +1,30 @@
 <?php
-/*consultas para interface*/
+if (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="periodo"){
+    $datainicio = date('Y-m-d', strtotime($_GET["datainicio"]));
+    $datafinal = date('Y-m-d', strtotime($_GET["datafinal"]));
+
+    $vendas_mes = \App\Models\clientes::select()
+        ->join("vendas", "clientes.id", "=", "vendas.cliente")
+            ->join("usuarios", "vendas.vendedor", "=", "usuarios.id")
+                ->select([
+                    "clientes.id",
+                    "clientes.cpf",
+                    "clientes.nome",
+                    \DB::RAW('DATE_FORMAT(date(vendas.data_venda), "%d/%m/%Y") as data_venda'),
+                    "usuarios.email" ])->whereBetween('vendas.data_venda', [$datainicio, $datafinal])
+        ->get()->toArray();
+}  elseif (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="vendedor") {
+    $vendas_mes = \App\Models\clientes::select()
+    ->join("vendas", "clientes.id", "=", "vendas.cliente")
+        ->join("usuarios", "vendas.vendedor", "=", "usuarios.id")
+            ->select([
+                "clientes.id",
+                "clientes.cpf",
+                "clientes.nome",
+                \DB::RAW('DATE_FORMAT(date(vendas.data_venda), "%d/%m/%Y") as data_venda'),
+                "usuarios.email" ])->where('vendas.vendedor', $_GET["vendedor"])
+    ->get()->toArray();
+} else {
     $vendas_mes = \App\Models\clientes::select()
     ->join("vendas", "clientes.id", "=", "vendas.cliente")
         ->join("usuarios", "vendas.vendedor", "=", "usuarios.id")
@@ -10,6 +35,9 @@
                 \DB::RAW('DATE_FORMAT(date(vendas.data_venda), "%d/%m/%Y") as data_venda'),
                 "usuarios.email" ])
     ->get()->toArray();
+};
+
+/*consultas para interface*/
     $year = date("Y");
     $month = date("m");
     $vendas_realizadas = \App\Models\vendas::select()->whereBetween('data_venda', ["$year-$month-01", "$year-$month-31"])->get()->count();
