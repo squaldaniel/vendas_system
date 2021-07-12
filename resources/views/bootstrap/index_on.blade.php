@@ -1,8 +1,7 @@
 <?php
-if (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="periodo"){
+    if (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="periodo"){
     $datainicio = date('Y-m-d', strtotime($_GET["datainicio"]));
     $datafinal = date('Y-m-d', strtotime($_GET["datafinal"]));
-
     $vendas_mes = \App\Models\clientes::select()
         ->join("vendas", "clientes.id", "=", "vendas.cliente")
             ->join("usuarios", "vendas.vendedor", "=", "usuarios.id")
@@ -13,17 +12,17 @@ if (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="periodo"){
                     \DB::RAW('DATE_FORMAT(date(vendas.data_venda), "%d/%m/%Y") as data_venda'),
                     "usuarios.email" ])->whereBetween('vendas.data_venda', [$datainicio, $datafinal])
         ->get()->toArray();
-}  elseif (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="vendedor") {
-    $vendas_mes = \App\Models\clientes::select()
-    ->join("vendas", "clientes.id", "=", "vendas.cliente")
-        ->join("usuarios", "vendas.vendedor", "=", "usuarios.id")
-            ->select([
-                "clientes.id",
-                "clientes.cpf",
-                "clientes.nome",
-                \DB::RAW('DATE_FORMAT(date(vendas.data_venda), "%d/%m/%Y") as data_venda'),
-                "usuarios.email" ])->where('vendas.vendedor', $_GET["vendedor"])
-    ->get()->toArray();
+    }  elseif (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="vendedor") {
+        $vendas_mes = \App\Models\clientes::select()
+        ->join("vendas", "clientes.id", "=", "vendas.cliente")
+            ->join("usuarios", "vendas.vendedor", "=", "usuarios.id")
+                ->select([
+                    "clientes.id",
+                    "clientes.cpf",
+                    "clientes.nome",
+                    \DB::RAW('DATE_FORMAT(date(vendas.data_venda), "%d/%m/%Y") as data_venda'),
+                    "usuarios.email" ])->where('vendas.vendedor', $_GET["vendedor"])
+        ->get()->toArray();
 } else {
     $vendas_mes = \App\Models\clientes::select()
     ->join("vendas", "clientes.id", "=", "vendas.cliente")
@@ -33,7 +32,7 @@ if (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="periodo"){
                 "clientes.cpf",
                 "clientes.nome",
                 \DB::RAW('DATE_FORMAT(date(vendas.data_venda), "%d/%m/%Y") as data_venda'),
-                "usuarios.email" ])
+                "usuarios.email" ])->whereBetween('vendas.data_venda', [date('Y-m').'-01', date('Y-m').'-31'])
     ->get()->toArray();
 };
 
@@ -44,10 +43,6 @@ if (isset($_GET["typeFilter"]) && $_GET["typeFilter"]=="periodo"){
     $quant_operadores = \App\Models\usuarios::select()->where(["nivel"=>"operador", "active"=>1])->count();
     $list_operadores = \App\Models\usuarios::select("email", "name", "id")->where(["nivel"=>"operador", "active"=>1])->get()->toArray();
 /*consultas para interface*/
-if (!isset($_GET["pstart"]))
-{
-    
-}
 ?>
 @extends("bootstrap.model")
 @section("headmain")

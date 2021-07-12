@@ -34,7 +34,6 @@ Route::get('login/', function () {
     return view('bootstrap.login');
 });
 Route::get("logout/", [authenticationController::class, "getOut"]);
-
 Route::get('pdv/', function () {
     $parcelas = \DB::table("parcelas")->get()->toArray();
     $planos = \DB::table("planos")->get();
@@ -42,15 +41,12 @@ Route::get('pdv/', function () {
                 "parcelas"=>$parcelas];
     return view('bootstrap.form_venda')->with($dados);
 });
-
 Route::get('dashboard/', function () {
     return view('bootstrap.dashboard');
 });
-
 Route::post('novavenda/', [inputController::class, "novavenda"]);
 Route::post("authentication/", [authenticationController::class, "check"]);
 Route::post("admin/cadnewuser/", [inputController::class, "cadnewuser"]);
-
-Route::get("admin/usuario/", function(){
+Route::get("admin/cadastros/", function(){
     return view("bootstrap.form_novousuario");
 });

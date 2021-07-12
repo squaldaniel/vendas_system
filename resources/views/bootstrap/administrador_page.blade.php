@@ -38,9 +38,9 @@ $meses = [
               @if ($quant_operadores != 0)
               ({{$quant_operadores}})
               @endif
-               <span class="fa fa-users" aria-hidden="true"></span> Operador</a>
+               <span class="fa fa-users" aria-hidden="true"></span> Operadores /Cadastros</a>
             <ul class="dropdown-menu" aria-labelledby="operadoreslist">
-              <li><a class="dropdown-item" href="http://{{$_SERVER["HTTP_HOST"]}}/admin/usuario/"><span class="fa fa-user-plus"></span> Novo Usuário </a></li>
+              <li><a class="dropdown-item" href="http://{{$_SERVER["HTTP_HOST"]}}/admin/cadastros/"><span class="fa fa-user-plus"></span> Cadastrar </a></li>
               <li><hr class="dropdown-divider"></li>
               @foreach($list_operadores as $key=>$value)
             <li><a class="dropdown-item" href="admin/operador/{{$value["id"]}}">{{$value["name"]}}</a></li>
